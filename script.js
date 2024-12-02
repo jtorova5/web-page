@@ -1,36 +1,83 @@
-const champions = [
-    "Ahri", "Ashe", "Garen", "Lux", "Darius", "Yasuo", "Jinx", "Thresh", "Lee Sin", "Teemo",
-    "Zed", "Vayne", "Caitlyn", "Ezreal", "Katarina", "Master Yi", "Riven", "Jhin", "Ekko", "Akali"
-];
-
-const backgrounds = [
-    "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt1a1b36acd2f3b6a0/5e9b6b6b8691eb0907e1d0d0/01_Banner.jpg",
-    "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt3d2d4b9d5c7ed1b3/5e9b6b6c1d2d0f7c6a8c8b9c/02_Banner.jpg",
-    "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt9a3a7e7f0d4d4a4c/5e9b6b6c1d2d0f7c6a8c8b9e/03_Banner.jpg",
-    "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt7f1f1b1b1b1b1b1b/5e9b6b6c1d2d0f7c6a8c8ba0/04_Banner.jpg"
-];
-
 document.addEventListener('DOMContentLoaded', () => {
-    const randomChampionButton = document.getElementById('random-champion');
-    const championNameDisplay = document.getElementById('champion-name');
-    const backgroundElement = document.getElementById('background');
+    const champions = [
+        "Ahri", "Ashe", "Garen", "Lux", "Darius", "Yasuo", "Jinx", "Thresh", "Lee Sin", "Teemo",
+        "Zed", "Vayne", "Caitlyn", "Ezreal", "Katarina", "Master Yi", "Riven", "Jhin", "Ekko", "Akali"
+    ];
 
-    function changeBackground() {
-        const randomIndex = Math.floor(Math.random() * backgrounds.length);
-        backgroundElement.style.backgroundImage = `url('${backgrounds[randomIndex]}')`;
+    const randomChampionBtn = document.getElementById('randomChampionBtn');
+    const championCard = document.getElementById('championCard');
+    const championImage = document.getElementById('championImage');
+    const championName = document.getElementById('championName');
+    const snowCanvas = document.getElementById('snowCanvas');
+    const ctx = snowCanvas.getContext('2d');
+
+    // Set up snow canvas
+    function resizeCanvas() {
+        snowCanvas.width = window.innerWidth;
+        snowCanvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+
+    // Snow particles
+    const particles = [];
+    const particleCount = 200;
+
+    function createSnowParticles() {
+        particles.length = 0; // Clear existing particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * snowCanvas.width,
+                y: Math.random() * snowCanvas.height,
+                radius: Math.random() * 4 + 1,
+                speed: Math.random() * 3 + 1
+            });
+        }
+    }
+    createSnowParticles();
+
+    function drawSnow() {
+        ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+        ctx.beginPath();
+        for (let i = 0; i < particleCount; i++) {
+            const p = particles[i];
+            ctx.moveTo(p.x, p.y);
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, true);
+        }
+        ctx.fill();
+        moveSnow();
     }
 
-    function displayRandomChampion() {
-        const randomIndex = Math.floor(Math.random() * champions.length);
-        const randomChampion = champions[randomIndex];
-        championNameDisplay.textContent = randomChampion;
+    function moveSnow() {
+        for (let i = 0; i < particleCount; i++) {
+            const p = particles[i];
+            p.y += p.speed;
+            if (p.y > snowCanvas.height) {
+                p.y = -10;
+                p.x = Math.random() * snowCanvas.width;
+            }
+        }
     }
 
-    randomChampionButton.addEventListener('click', displayRandomChampion);
+    function animateSnow() {
+        drawSnow();
+        requestAnimationFrame(animateSnow);
+    }
 
-    // Cambiar el fondo cada 10 segundos
-    setInterval(changeBackground, 10000);
+    // Start snow animation
+    animateSnow();
 
-    // Iniciar con un fondo aleatorio
-    changeBackground();
+    // Champion selection
+    randomChampionBtn.addEventListener('click', () => {
+        const randomChampion = champions[Math.floor(Math.random() * champions.length)];
+        championImage.src = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${randomChampion}_0.jpg`;
+        championName.textContent = randomChampion;
+        championCard.classList.remove('hidden');
+    });
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        createSnowParticles();
+    });
 });

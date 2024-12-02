@@ -3,38 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>League of Legends - Mundo de Runeterra</title>
+    <title>League of Legends - Campeón Aleatorio</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="https://static.wikia.nocookie.net/leagueoflegends/images/1/12/League_of_Legends_Icon.png">
 </head>
 <body>
-    <div id="background"></div>
-    <div class="content">
-        <header>
-            <h1>League of Legends</h1>
-            <p>Bienvenido al mundo de Runeterra</p>
-        </header>
-
-        <main>
-            <h2>Sobre el juego</h2>
-            <p>League of Legends es un juego de estrategia por equipos en el que dos equipos de cinco campeones se enfrentan para destruir la base del otro. Elige de entre más de 140 campeones para realizar jugadas épicas, asegurar asesinatos y destruir torretas mientras avanzas hacia la victoria.</p>
-
-            <h2>Características principales</h2>
-            <ul>
-                <li>Más de 140 campeones únicos para jugar</li>
-                <li>Mapas y modos de juego variados</li>
-                <li>Competencia de alto nivel y sistema de clasificación</li>
-                <li>Actualizaciones regulares y eventos especiales</li>
-            </ul>
-
-            <div class="champion-display">
-                <h3>Campeón aleatorio</h3>
-                <button id="random-champion">Mostrar campeón aleatorio</button>
-                <p id="champion-name"></p>
-            </div>
-        </main>
+    <canvas id="snowCanvas"></canvas>
+    <div class="container">
+        <h1>League of Legends</h1>
+        <h2>Campeón Aleatorio</h2>
+        <button id="randomChampionBtn">Mostrar Campeón</button>
+        <div id="championCard" class="hidden">
+            <img id="championImage" src="" alt="Campeón">
+            <h3 id="championName"></h3>
+        </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
